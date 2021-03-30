@@ -90,6 +90,7 @@ ggplot(Total_Steps, aes(x = steps)) +
 ```
 ## Warning: Removed 8 rows containing non-finite values (stat_bin).
 ```
+![1](https://user-images.githubusercontent.com/31593704/112999179-5a37fe00-918c-11eb-8f64-ada58f0b6e47.jpg)
 
 ![](Figs/gg4-1.png)<!-- -->
 
@@ -113,6 +114,7 @@ Total_Steps[, .(Mean_Steps = mean(steps, na.rm = TRUE), Median_Steps = median(st
 IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval)] 
 ggplot(IntervalDT, aes(x = interval , y = steps)) + geom_line(color="blue", size=1) + labs(title = "Avg. Daily Steps", x = "Interval", y = "Avg. Steps per day")
 ```
+![2](https://user-images.githubusercontent.com/31593704/112999391-881d4280-918c-11eb-9344-a31df9971b4e.jpg)
 
 ![](Figs/gg6-1.png)<!-- -->
 
@@ -185,6 +187,8 @@ Total_Steps[, .(Mean_Steps = mean(steps), Median_Steps = median(steps))]
 ggplot(Total_Steps, aes(x = steps)) + geom_histogram(fill = "blue", binwidth = 1000) + labs(title = "Daily Steps", x = "Steps", y = "Frequency")
 ```
 
+![3](https://user-images.githubusercontent.com/31593704/112999439-92d7d780-918c-11eb-8e70-dcc1e1417b97.jpg)
+
 ![](Figs/gg11-1.png)<!-- -->
 
 Type of Estimate | Mean_Steps | Median_Steps
@@ -232,3 +236,5 @@ ggplot(IntervalDT , aes(x = interval , y = steps, color=`weekday or weekend`)) +
 ```
 
 ![](Figs/gg13-1.png)<!-- -->
+
+![4](https://user-images.githubusercontent.com/31593704/112999505-a2efb700-918c-11eb-9aa8-7e58d97e8cc0.jpg)
