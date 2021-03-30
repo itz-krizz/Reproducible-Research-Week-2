@@ -36,35 +36,29 @@ Loading and preprocessing the data
 
 Unzip data to obtain a csv file.
 
-``` r
-library("data.table")
-```
+    library("data.table")
 
     ## Warning: package 'data.table' was built under R version 4.0.3
 
-``` r
-library(ggplot2)
-fileUrl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
-download.file(fileUrl, destfile = paste0(getwd(), '/repdata%2Fdata%2Factivity.zip'), method = "curl")
-unzip("repdata%2Fdata%2Factivity.zip",exdir = "data")
-```
+    library(ggplot2)
+    fileUrl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+    download.file(fileUrl, destfile = paste0(getwd(), '/repdata%2Fdata%2Factivity.zip'), method = "curl")
+    unzip("repdata%2Fdata%2Factivity.zip",exdir = "data")
 
 Reading csv Data into Data.Table.
 ---------------------------------
 
-``` r
-activityDT <- data.table::fread(input = "data/activity.csv")
-```
+    activityDT <- data.table::fread(input = "data/activity.csv")
 
 What is mean total number of steps taken per day?
 -------------------------------------------------
 
 1.  Calculate the total number of steps taken per day
 
-``` r
-Total_Steps <- activityDT[, c(lapply(.SD, sum, na.rm = FALSE)), .SDcols = c("steps"), by = .(date)] 
-head(Total_Steps, 10)
-```
+<!-- -->
+
+    Total_Steps <- activityDT[, c(lapply(.SD, sum, na.rm = FALSE)), .SDcols = c("steps"), by = .(date)] 
+    head(Total_Steps, 10)
 
     ##           date steps
     ##  1: 2012-10-01    NA
@@ -82,22 +76,22 @@ head(Total_Steps, 10)
     barplot, research the difference between them. Make a histogram of
     the total number of steps taken each day.
 
-``` r
-ggplot(Total_Steps, aes(x = steps)) +
-    geom_histogram(fill = "blue", binwidth = 1000) +
-    labs(title = "Daily Steps", x = "Steps", y = "Frequency")
-```
+<!-- -->
+
+    ggplot(Total_Steps, aes(x = steps)) +
+        geom_histogram(fill = "blue", binwidth = 1000) +
+        labs(title = "Daily Steps", x = "Steps", y = "Frequency")
 
     ## Warning: Removed 8 rows containing non-finite values (stat_bin).
 
-![](PA1_templatee_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](PA1_templatee_files/figure-markdown_strict/unnamed-chunk-4-1.png)
 
 1.  Calculate and report the mean and median of the total number of
     steps taken per day
 
-``` r
-Total_Steps[, .(Mean_Steps = mean(steps, na.rm = TRUE), Median_Steps = median(steps, na.rm = TRUE))]
-```
+<!-- -->
+
+    Total_Steps[, .(Mean_Steps = mean(steps, na.rm = TRUE), Median_Steps = median(steps, na.rm = TRUE))]
 
     ##    Mean_Steps Median_Steps
     ## 1:   10766.19        10765
@@ -109,19 +103,19 @@ What is the average daily activity pattern?
     (x-axis) and the average number of steps taken, averaged across all
     days (y-axis)
 
-``` r
-IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval)] 
-ggplot(IntervalDT, aes(x = interval , y = steps)) + geom_line(color="blue", size=1) + labs(title = "Avg. Daily Steps", x = "Interval", y = "Avg. Steps per day")
-```
+<!-- -->
 
-![](PA1_templatee_files/figure-markdown_github/unnamed-chunk-6-1.png)
+    IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval)] 
+    ggplot(IntervalDT, aes(x = interval , y = steps)) + geom_line(color="blue", size=1) + labs(title = "Avg. Daily Steps", x = "Interval", y = "Avg. Steps per day")
+
+![](PA1_templatee_files/figure-markdown_strict/unnamed-chunk-6-1.png)
 
 1.  Which 5-minute interval, on average across all the days in the
     dataset, contains the maximum number of steps?
 
-``` r
-IntervalDT[steps == max(steps), .(max_interval = interval)]
-```
+<!-- -->
+
+    IntervalDT[steps == max(steps), .(max_interval = interval)]
 
     ##    max_interval
     ## 1:          835
@@ -132,16 +126,14 @@ Imputing missing values
 1.  Calculate and report the total number of missing values in the
     dataset (i.e. the total number of rows with 𝙽𝙰s)
 
-``` r
-activityDT[is.na(steps), .N ]
-```
+<!-- -->
+
+    activityDT[is.na(steps), .N ]
 
     ## [1] 2304
 
-``` r
-# alternative solution
-nrow(activityDT[is.na(steps),])
-```
+    # alternative solution
+    nrow(activityDT[is.na(steps),])
 
     ## [1] 2304
 
@@ -150,17 +142,17 @@ nrow(activityDT[is.na(steps),])
     example, you could use the mean/median for that day, or the mean for
     that 5-minute interval, etc.
 
-``` r
-# Filling in missing values with median of dataset. 
-activityDT[is.na(steps), "steps"] <- activityDT[, c(lapply(.SD, median, na.rm = TRUE)), .SDcols = c("steps")]
-```
+<!-- -->
+
+    # Filling in missing values with median of dataset. 
+    activityDT[is.na(steps), "steps"] <- activityDT[, c(lapply(.SD, median, na.rm = TRUE)), .SDcols = c("steps")]
 
 1.  Create a new dataset that is equal to the original dataset but with
     the missing data filled in.
 
-``` r
-data.table::fwrite(x = activityDT, file = "data/tidyData.csv", quote = FALSE)
-```
+<!-- -->
+
+    data.table::fwrite(x = activityDT, file = "data/tidyData.csv", quote = FALSE)
 
 1.  Make a histogram of the total number of steps taken each day and
     calculate and report the mean and median total number of steps taken
@@ -168,26 +160,41 @@ data.table::fwrite(x = activityDT, file = "data/tidyData.csv", quote = FALSE)
     part of the assignment? What is the impact of imputing missing data
     on the estimates of the total daily number of steps?
 
-``` r
-# total number of steps taken per day
-Total_Steps <- activityDT[, c(lapply(.SD, sum)), .SDcols = c("steps"), by = .(date)] 
-# mean and median total number of steps taken per day
-Total_Steps[, .(Mean_Steps = mean(steps), Median_Steps = median(steps))]
-```
+<!-- -->
+
+    # total number of steps taken per day
+    Total_Steps <- activityDT[, c(lapply(.SD, sum)), .SDcols = c("steps"), by = .(date)] 
+    # mean and median total number of steps taken per day
+    Total_Steps[, .(Mean_Steps = mean(steps), Median_Steps = median(steps))]
 
     ##    Mean_Steps Median_Steps
     ## 1:    9354.23        10395
 
-``` r
-ggplot(Total_Steps, aes(x = steps)) + geom_histogram(fill = "blue", binwidth = 1000) + labs(title = "Daily Steps", x = "Steps", y = "Frequency")
-```
+    ggplot(Total_Steps, aes(x = steps)) + geom_histogram(fill = "blue", binwidth = 1000) + labs(title = "Daily Steps", x = "Steps", y = "Frequency")
 
-![](PA1_templatee_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](PA1_templatee_files/figure-markdown_strict/unnamed-chunk-11-1.png)
 
-| Type of Estimate                       | Mean\_Steps | Median\_Steps |
-|----------------------------------------|-------------|---------------|
-| First Part (with na)                   | 10765       | 10765         |
-| Second Part (fillin in na with median) | 9354.23     | 10395         |
+<table>
+<thead>
+<tr class="header">
+<th>Type of Estimate</th>
+<th>Mean_Steps</th>
+<th>Median_Steps</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>First Part (with na)</td>
+<td>10765</td>
+<td>10765</td>
+</tr>
+<tr class="even">
+<td>Second Part (fillin in na with median)</td>
+<td>9354.23</td>
+<td>10395</td>
+</tr>
+</tbody>
+</table>
 
 Are there differences in activity patterns between weekdays and weekends?
 -------------------------------------------------------------------------
@@ -196,16 +203,16 @@ Are there differences in activity patterns between weekdays and weekends?
     “weekday” and “weekend” indicating whether a given date is a weekday
     or weekend day.
 
-``` r
-# Just recreating activityDT from scratch then making the new factor variable. (No need to, just want to be clear on what the entire process is.) 
-activityDT <- data.table::fread(input = "data/activity.csv")
-activityDT[, date := as.POSIXct(date, format = "%Y-%m-%d")]
-activityDT[, `Day of Week`:= weekdays(x = date)]
-activityDT[grepl(pattern = "Monday|Tuesday|Wednesday|Thursday|Friday", x = `Day of Week`), "weekday or weekend"] <- "weekday"
-activityDT[grepl(pattern = "Saturday|Sunday", x = `Day of Week`), "weekday or weekend"] <- "weekend"
-activityDT[, `weekday or weekend` := as.factor(`weekday or weekend`)]
-head(activityDT, 10)
-```
+<!-- -->
+
+    # Just recreating activityDT from scratch then making the new factor variable. (No need to, just want to be clear on what the entire process is.) 
+    activityDT <- data.table::fread(input = "data/activity.csv")
+    activityDT[, date := as.POSIXct(date, format = "%Y-%m-%d")]
+    activityDT[, `Day of Week`:= weekdays(x = date)]
+    activityDT[grepl(pattern = "Monday|Tuesday|Wednesday|Thursday|Friday", x = `Day of Week`), "weekday or weekend"] <- "weekday"
+    activityDT[grepl(pattern = "Saturday|Sunday", x = `Day of Week`), "weekday or weekend"] <- "weekend"
+    activityDT[, `weekday or weekend` := as.factor(`weekday or weekend`)]
+    head(activityDT, 10)
 
     ##     steps       date interval Day of Week weekday or weekend
     ##  1:    NA 2012-10-01        0      Monday            weekday
@@ -225,10 +232,10 @@ head(activityDT, 10)
     See the README file in the GitHub repository to see an example of
     what this plot should look like using simulated data.
 
-``` r
-activityDT[is.na(steps), "steps"] <- activityDT[, c(lapply(.SD, median, na.rm = TRUE)), .SDcols = c("steps")]
-IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval, `weekday or weekend`)] 
-ggplot(IntervalDT , aes(x = interval , y = steps, color=`weekday or weekend`)) + geom_line() + labs(title = "Avg. Daily Steps by Weektype", x = "Interval", y = "No. of Steps") + facet_wrap(~`weekday or weekend` , ncol = 1, nrow=2)
-```
+<!-- -->
 
-![](PA1_templatee_files/figure-markdown_github/unnamed-chunk-13-1.png)
+    activityDT[is.na(steps), "steps"] <- activityDT[, c(lapply(.SD, median, na.rm = TRUE)), .SDcols = c("steps")]
+    IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval, `weekday or weekend`)] 
+    ggplot(IntervalDT , aes(x = interval , y = steps, color=`weekday or weekend`)) + geom_line() + labs(title = "Avg. Daily Steps by Weektype", x = "Interval", y = "No. of Steps") + facet_wrap(~`weekday or weekend` , ncol = 1, nrow=2)
+
+![](PA1_templatee_files/figure-markdown_strict/unnamed-chunk-13-1.png)
