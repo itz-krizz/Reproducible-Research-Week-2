@@ -2,9 +2,8 @@
 title: "Reproducible Research Project 1"
 author: "krishna"
 date: "3/30/2021"
-output: 
- md_document:
-    variant: markdown_github
+output:  md_document
+ 
 ---
 
 ```{r setup,include=FALSE}
