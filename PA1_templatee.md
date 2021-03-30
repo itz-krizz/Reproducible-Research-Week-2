@@ -1,5 +1,9 @@
+``` r
+knitr::opts_chunk$set(fig.path='Figs/')
+```
+
 Introduction
-------------
+============
 
 It is now possible to collect a large amount of data about personal
 movement using activity monitoring devices such as a Fitbit, Nike
@@ -90,7 +94,7 @@ ggplot(Total_Steps, aes(x = steps)) +
 
     ## Warning: Removed 8 rows containing non-finite values (stat_bin).
 
-![](PA1_templatee_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](Figs/unnamed-chunk-4-1.png)
 
 1.  Calculate and report the mean and median of the total number of
     steps taken per day
@@ -114,7 +118,7 @@ IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("step
 ggplot(IntervalDT, aes(x = interval , y = steps)) + geom_line(color="blue", size=1) + labs(title = "Avg. Daily Steps", x = "Interval", y = "Avg. Steps per day")
 ```
 
-![](PA1_templatee_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](Figs/unnamed-chunk-6-1.png)
 
 1.  Which 5-minute interval, on average across all the days in the
     dataset, contains the maximum number of steps?
@@ -182,7 +186,7 @@ Total_Steps[, .(Mean_Steps = mean(steps), Median_Steps = median(steps))]
 ggplot(Total_Steps, aes(x = steps)) + geom_histogram(fill = "blue", binwidth = 1000) + labs(title = "Daily Steps", x = "Steps", y = "Frequency")
 ```
 
-![](PA1_templatee_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](Figs/unnamed-chunk-11-1.png)
 
 | Type of Estimate                       | Mean\_Steps | Median\_Steps |
 |----------------------------------------|-------------|---------------|
@@ -231,4 +235,4 @@ IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("step
 ggplot(IntervalDT , aes(x = interval , y = steps, color=`weekday or weekend`)) + geom_line() + labs(title = "Avg. Daily Steps by Weektype", x = "Interval", y = "No. of Steps") + facet_wrap(~`weekday or weekend` , ncol = 1, nrow=2)
 ```
 
-![](PA1_templatee_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](Figs/unnamed-chunk-13-1.png)
