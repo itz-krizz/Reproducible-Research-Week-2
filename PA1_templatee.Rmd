@@ -5,6 +5,7 @@ date: "3/30/2021"
 output:  
  md_document:
     variant: markdown_github
+    keep_md: yes 
 
 ---
 ```{r global_options}
