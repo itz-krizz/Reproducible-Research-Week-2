@@ -86,7 +86,7 @@ What is mean total number of steps taken per day?
 
     ## Warning: Removed 8 rows containing non-finite values (stat_bin).
 
-![](Figs/unnamed-chunk-4-1.png)
+![](Figs/unnamed-chunk-3-1.png)
 
 1.  Calculate and report the mean and median of the total number of
     steps taken per day
@@ -110,7 +110,7 @@ What is the average daily activity pattern?
     IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval)] 
     ggplot(IntervalDT, aes(x = interval , y = steps)) + geom_line(color="blue", size=1) + labs(title = "Avg. Daily Steps", x = "Interval", y = "Avg. Steps per day")
 
-![](Figs/unnamed-chunk-6-1.png)
+![](Figs/unnamed-chunk-5-1.png)
 
 1.  Which 5-minute interval, on average across all the days in the
     dataset, contains the maximum number of steps?
@@ -174,7 +174,7 @@ Imputing missing values
 
     ggplot(Total_Steps, aes(x = steps)) + geom_histogram(fill = "blue", binwidth = 1000) + labs(title = "Daily Steps", x = "Steps", y = "Frequency")
 
-![](Figs/unnamed-chunk-11-1.png)
+![](Figs/unnamed-chunk-10-1.png)
 
 <table>
 <thead>
@@ -240,4 +240,4 @@ Are there differences in activity patterns between weekdays and weekends?
     IntervalDT <- activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval, `weekday or weekend`)] 
     ggplot(IntervalDT , aes(x = interval , y = steps, color=`weekday or weekend`)) + geom_line() + labs(title = "Avg. Daily Steps by Weektype", x = "Interval", y = "No. of Steps") + facet_wrap(~`weekday or weekend` , ncol = 1, nrow=2)
 
-![](Figs/unnamed-chunk-13-1.png)
+![](Figs/unnamed-chunk-12-1.png)
